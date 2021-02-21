@@ -78,7 +78,8 @@ def explore_match(win, img1, img2, kp_pairs, status = None, H = None):
     vis[:h1, :w1] = img1
     vis[:h2, w1:w1+w2] = img2
     vis = cv.cvtColor(vis, cv.COLOR_GRAY2BGR)
-
+    status_flag = 1
+    
     if H is not None:
         corners = np.float32([[0, 0], [w1, 0], [w1, h1], [0, h1]])
         corners = np.int32( cv.perspectiveTransform(corners.reshape(1, -1, 2), H).reshape(-1, 2) + (w1, 0) )
@@ -86,6 +87,7 @@ def explore_match(win, img1, img2, kp_pairs, status = None, H = None):
 
     if status is None:
         status = np.ones(len(kp_pairs), np.bool_)
+        status_flag = 2
     p1, p2 = [], []  # python 2 / python 3 change of zip unpacking
     for kpp in kp_pairs:
         p1.append(np.int32(kpp[0].pt))
@@ -125,7 +127,7 @@ def explore_match(win, img1, img2, kp_pairs, status = None, H = None):
             kp1s, kp2s = [], []
             for i in idxs:
                 (x1, y1), (x2, y2) = p1[i], p2[i]
-                col = (red, green)[status[i][0]]
+                col = (red, green)[status[i][0]] if status_flag == 1 else (red, green)[status[i]]
                 cv.line(cur_vis, (x1, y1), (x2, y2), col)
                 kp1, kp2 = kp_pairs[i]
                 kp1s.append(kp1)
