@@ -32,7 +32,7 @@ def main():
     if circles is not None: # Check if circles have been found and only then iterate over these and add them to the image
         _a, b, _c = circles.shape
         for i in range(b):
-            cv.circle(cimg, (circles[0][i][0], circles[0][i][1]), circles[0][i][2], (0, 0, 255), 3, cv.LINE_AA)
+            cv.circle(cimg, (circles[0][i][0], circles[0][i][1]), int(circles[0][i][2]), (0, 0, 255), 3, cv.LINE_AA)
             cv.circle(cimg, (circles[0][i][0], circles[0][i][1]), 2, (0, 255, 0), 3, cv.LINE_AA)  # draw center of circle
 
         cv.imshow("detected circles", cimg)
